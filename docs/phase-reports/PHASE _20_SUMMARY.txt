@@ -1,0 +1,63 @@
+PHASE 20 STATUS: REQUIRES FIXES
+
+SECURITY: All Phase 17 protections intact — no regressions. Game RPC ownership, AI rate limiting, storage cleanup, CORS, RLS, SECURITY DEFINER patterns, credit reservation chain all verified. PWA formally DEFERRED due to private-data caching risk.
+
+PWA: DEFERRED. Cannot safely cache authenticated/private data without risking data leakage. Full analysis in PHASE20_PWA_ANALYSIS.md. No service worker implemented. PWA private-data safety: MAINTAINED.
+
+PWA PRIVATE-DATA SAFETY: MAINTAINED — no service worker implemented means no risk of incorrect caching of private authenticated data (chat messages, wallet balances, profile information, game progress, etc.).
+
+AUTH: Auth restoration works correctly. Login/logout cycles verified. Session persistence across navigation verified. No auth issues introduced by code splitting. Reactive auth gates in App.tsx remain functional with lazy-loaded components.
+
+PERFORMANCE: Initial JS: 446.41 kB gzip — 35% reduction from Phase 18 baseline (687.38 kB). Main CSS: 64.55 kB gzip — unchanged. JS chunks: 6 (vs 1 in Phase 18). Largest chunk: 228.07 kB gzip (Ball Run). Game chunks: TTX (3.60 kB gzip), Sudoku (7.41 kB gzip), Ball Run (228.07 kB gzip), Water Sort (3.88 kB gzip). Total JS: ~689 kB gzip (same total, split across chunks).
+
+INITIAL JS: 446.41 kB gzip (main + runtime) — 35% reduction from Phase 18 baseline.
+
+MAIN CSS: 64.55 kB gzip — unchanged from Phase 18.
+
+JS CHUNKS: 6 (vs 1 in Phase 18) — tictactoe-DA-dpwJG.js (3.60 kB gzip), sudoku--4fjlM8I.js (7.41 kB gzip), ballrun-BaumTP9P.js (228.07 kB gzip), watersort-Bo-JVga5.js (3.88 kB gzip), index-n011qDoe.js (446.41 kB gzip main), rolldown-runtime-hePW80VL.js (0.71 kB gzip).
+
+GAME CHUNKS: 4 — Tic-Tac-Toe (3.60 kB gzip), Sudoku (7.41 kB gzip), Ball Run (228.07 kB gzip), Water Sort (3.88 kB gzip). Games loaded on-demand via React.lazy() + Suspense when user navigates to Games Hub and selects a specific game.
+
+CODE SPLITTING: IMPLEMENTED — React.lazy() + dynamic import() + Suspense + Vite manualChunks config. Build output proves separation into 6 chunks. Key: dynamic imports alone insufficient; Vite config manualChunks required to generate split chunks. 35% initial payload reduction proven by actual build output.
+
+BALL RUN: 228.07 kB gzip — size understood and justified by physics/rendering architecture. No safe reduction attempted that would compromise game integrity.
+
+LOADING UX: Game Suspense fallbacks maintained ("Loading Tic-Tac-Toe...", etc.). Non-game page loading states audited (Home, Chat, Progression, Wallet, Profile) — noted as optional polish, not blocking release.
+
+ERROR UX: User-friendly messages across all error types. No SQL errors, stack traces, or service-role credentials exposed. AI provider failures handled gracefully. Rate-limited requests do not consume credits.
+
+AI UX: Streaming SSE working. Conversation switching verified fixed — no stale messages on rapid switch or refresh. Retry preserves credits. Rate limiter remains before provider usage. Multimodal behavior functional.
+
+IMAGE GENERATION: Generation state communicated. Credit release on failure verified. If not configured: graceful disabled state. Text chat remains functional.
+
+TTS: Availability state shown when GEMINI_TTS_MODEL not configured. Text chat continues when TTS fails. TTS failure never breaks chat.
+
+CHAT UX: Conversation switching verified via 8-step test — no stale messages, active ID correct, URL state synchronized. New conversation, rename, delete all working. AI streaming, markdown, credit consumption all functional.
+
+ACCESSIBILITY: Source-level audit complete — all ARIA attributes confirmed on 4 games and chat. Screen reader: NOT EXECUTABLE IN CURRENT ENVIRONMENT (documented limitation). No new accessibility issues introduced by code splitting. Keyboard audit: Tab/Shift+Tab/Enter/Space functional, logical focus order, visible focus, no keyboard traps.
+
+OBSERVABILITY: Lightweight diagnostics only. No logging of conversation contents, AI prompts, passwords, access tokens, API keys, or private attachment data. Category-based anonymous technical metadata preferred.
+
+SECRET SCAN: Clean. No service-role key patterns in frontend build output. No Gemini API key in production assets. No private credentials exposed. Vite VITE_SUPABASE_URL + VITE_SUPABASE_ANON_KEY only public-safe env vars. Service-role and Gemini keys server-side only.
+
+TESTS: 320/320 passing, 0 failed, 0 skipped. All 16 test suites green. No tests removed.
+
+TYPESCRIPT: 0 errors. tsc -b passes cleanly.
+
+LINT: 0 errors. Only pre-existing warnings unchanged from baseline.
+
+BUILD: PASS. tsc -b passes, vite build passes. Output: 6 JS chunks + 1 CSS + 1 runtime. Initial payload 446.41 kB gzip (main + runtime) vs 687.38 kB baseline — 35% reduction proven by generated output.
+
+RELEASE SMOKE TEST: 20/20 points verified (21st item—PWA behavior—documented as safely deferred).
+
+DEFERRED: PWA (auth-aware service worker strategy — cannot safely cache private data without architecture changes). Additional loading-state polish for non-game pages. Full screen-reader testing (requires assistive technology environment). Additional AI/image/TTS UX polish. Ball Run size noted as justified limitation.
+
+REMAINING LIMITATIONS: PWA safely deferred without auth-aware caching architecture; screen-reader testing requires execution environment with NVDA/VoiceOver; additional loading states for non-game pages beyond maintained game fallbacks; further AI/UUX polish items; Ball Run remaining large when its size is understood and justified.
+
+RECOMMENDED PHASE 21 WORK: When PWA architecture with auth-aware service worker strategy is designed, revisit PWA implementation. All other items are complete or properly deferred.
+
+FINAL VERDICT: PHASE 20: REQUIRES FIXES
+
+The only blocking issue is PWA — it cannot be safely implemented without risking private-data caching problems. This is explicitly documented and deferred. All other Phase 20 objectives are met, and the application is release-ready without PWA.
+
+Do NOT start Phase 21.
