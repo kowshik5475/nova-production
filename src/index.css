@@ -1,0 +1,3480 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import './styles/theme.css';
+
+:root {
+  /* NOVA Application Theme variables (--nova-*) are defined in src/styles/theme.css */
+  /* Game Environment Theme variables (--tt-*, --sudoku-*) are defined in src/styles/theme.css */
+
+  font-family: Manrope, Arial, sans-serif;
+  color: var(--nova-text-primary);
+  background: var(--nova-bg-primary);
+  font-synthesis: none;
+}
+
+/* ==========================================================================
+   NOVA APPLICATION — Global foundation
+   60% deep space · 30% cyan/teal system · 10% electric magenta accent
+   Semantic tokens only; games never read these (see .game-environment).
+   ========================================================================== */
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--nova-gradient-bg);
+  color: var(--nova-text-primary);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+/* --- App shell --- */
+.nova-shell {
+  min-height: 100vh;
+  background: var(--nova-gradient-bg);
+  color: var(--nova-text-primary);
+}
+
+/* --- Topbar --- */
+.topbar {
+  height: 76px;
+  border-bottom: 1px solid var(--nova-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6vw;
+}
+
+.brand {
+  background: none;
+  border: 0;
+  color: var(--nova-text-primary);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-align: left;
+}
+
+.brand span {
+  color: var(--nova-brand);
+  display: block;
+  font: 500 9px 'DM Mono', monospace;
+  letter-spacing: 3px;
+  margin-top: 2px;
+}
+
+.balances {
+  display: flex;
+  gap: 10px;
+}
+
+.balances span {
+  border: 1px solid var(--nova-accent-secondary-dim);
+  border-radius: 999px;
+  color: var(--nova-text-secondary);
+  font: 500 12px 'DM Mono', monospace;
+  padding: 8px 11px;
+}
+
+.balances small {
+  color: var(--nova-text-muted);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mode-badge {
+  border: 1px solid var(--nova-accent-secondary);
+  border-radius: 999px;
+  color: var(--nova-accent-secondary);
+  font: 600 9px 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
+.signout-btn {
+  background: none;
+  border: 1px solid var(--nova-input-border);
+  border-radius: 999px;
+  color: var(--nova-text-secondary);
+  font: 500 12px 'DM Mono', monospace;
+  padding: 6px 14px;
+  text-align: right;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  line-height: 1.4;
+}
+
+.signout-btn small {
+  display: block;
+  color: var(--nova-text-muted);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.signout-btn:hover {
+  border-color: var(--nova-accent-secondary);
+  color: var(--nova-text-primary);
+}
+
+/* --- Layout / sidebar / nav --- */
+.app-frame {
+  max-width: 1200px;
+  min-height: calc(100vh - 122px);
+  display: grid;
+  grid-template-columns: 155px 1fr;
+  margin: auto;
+}
+
+.sidebar {
+  border-right: 1px solid var(--nova-border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 38px 20px;
+}
+
+.sidebar button {
+  background: none;
+  border: 0;
+  border-left: 2px solid transparent;
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+  padding: 11px 13px;
+  min-height: 24px;
+  text-align: left;
+  text-transform: capitalize;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.sidebar button:hover {
+  background: var(--nova-secondary-hover-bg);
+  color: var(--nova-text-primary);
+  border-left-color: var(--nova-accent-secondary-dim);
+}
+
+.sidebar button.active {
+  background: var(--nova-bg-surface);
+  color: var(--nova-text-primary);
+  border-left-color: var(--nova-accent-secondary);
+}
+
+.content {
+  padding: 56px clamp(24px, 6vw, 80px);
+}
+
+/* --- Typography --- */
+.eyebrow {
+  color: var(--nova-accent);
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  margin: 0 0 14px;
+}
+
+.content h1 {
+  font-size: clamp(32px, 5vw, 54px);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 0 0 16px;
+}
+
+.lede {
+  color: var(--nova-text-muted);
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 38px;
+}
+
+/* --- Shared cards --- */
+.hero-grid,
+.wallet-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+}
+
+.primary-card,
+.insight-card,
+.wallet-grid article,
+.exchange {
+  border: 1px solid var(--nova-card-border);
+  border-radius: 16px;
+  background: var(--nova-card);
+  padding: 22px 24px;
+  min-width: 0;
+}
+
+.primary-card p,
+.insight-card p,
+.wallet-grid p,
+.exchange p {
+  color: var(--nova-text-muted);
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin: 0 0 10px;
+}
+
+.primary-card strong,
+.wallet-grid strong {
+  display: block;
+  font-size: 38px;
+  letter-spacing: -2px;
+  margin-bottom: 16px;
+  color: var(--nova-text-primary);
+}
+
+.primary-card small,
+.wallet-grid small,
+.exchange small {
+  color: var(--nova-text-muted);
+  display: block;
+  line-height: 1.45;
+}
+
+/* Progress — cyan secondary system */
+.progress {
+  height: 8px;
+  border-radius: 99px;
+  background: var(--nova-progress-track);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.progress i {
+  background: var(--nova-progress-fill);
+  display: block;
+  height: 100%;
+}
+
+/*
+ * Insight cards — dark base + cyan label system (not large solid teal fills).
+ * Cyan remains the 30% secondary; magenta stays CTA-only (10% accent).
+ */
+.insight-card {
+  background: color-mix(in srgb, var(--nova-insight) 28%, var(--nova-card));
+  border-color: var(--nova-insight-border);
+  color: var(--nova-insight-text);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.insight-card p {
+  color: var(--nova-insight-label);
+  margin-bottom: 8px;
+}
+
+.insight-card h2 {
+  font-size: 26px;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  color: var(--nova-text-primary);
+}
+
+.insight-card span {
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--nova-text-secondary);
+  margin: 0 0 18px;
+  flex: 1 1 auto;
+}
+
+/* Primary CTA — electric magenta (10% accent) with dark text; bottom-aligned across cards */
+.insight-card button,
+.exchange button,
+.composer button,
+.auth-form button {
+  background: var(--nova-cta);
+  border: 0;
+  border-radius: 8px;
+  color: var(--nova-cta-text);
+  font-weight: 700;
+  margin-top: auto;
+  align-self: flex-start;
+  padding: 11px 15px;
+  min-height: 42px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.insight-card button:hover:not(:disabled),
+.exchange button:hover:not(:disabled),
+.composer button:hover:not(:disabled),
+.auth-form button:hover:not(:disabled) {
+  background: var(--nova-cta-hover);
+}
+
+.insight-card button:active:not(:disabled),
+.exchange button:active:not(:disabled),
+.composer button:active:not(:disabled),
+.auth-form button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Secondary button — cyan outline system */
+.btn.secondary {
+  background: transparent;
+  border: 1px solid var(--nova-input-border);
+  border-radius: 8px;
+  color: var(--nova-secondary-text);
+  font: 600 14px Manrope, sans-serif;
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: var(--nova-secondary-hover-bg);
+  border-color: var(--nova-accent-secondary);
+  color: var(--nova-accent-secondary);
+}
+
+/* Flow — magenta arrows (accent), muted steps */
+.flow {
+  align-items: center;
+  color: var(--nova-text-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  font-size: 13px;
+  margin-top: 40px;
+}
+
+.flow span {
+  border-bottom: 1px solid var(--nova-accent-secondary-dim);
+  padding: 9px 0;
+}
+
+.flow b {
+  color: var(--nova-accent);
+}
+
+/* --- Wallet --- */
+.wallet-grid {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 620px;
+  margin-bottom: 17px;
+}
+
+.exchange {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 620px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.exchange h2 {
+  font-size: 20px;
+  margin: 0 0 7px;
+}
+
+.exchange button {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.wallet-status {
+  color: var(--nova-text-muted);
+  font: 12px 'DM Mono', monospace;
+  margin-top: 12px;
+}
+
+.wallet-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+.wallet-history-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--nova-card-alt);
+  font: 500 13px 'DM Mono', monospace;
+  min-width: 0;
+}
+
+.wallet-history-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.wallet-history-type {
+  color: var(--nova-text-primary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.wallet-history-currency {
+  color: var(--nova-text-secondary);
+  font-size: 12px;
+}
+
+.wallet-history-amount {
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin-left: auto;
+}
+
+.wallet-history-amount-in {
+  color: var(--nova-success);
+}
+
+.wallet-history-amount-out {
+  color: var(--nova-error);
+}
+
+.wallet-history-date {
+  color: var(--nova-text-secondary);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.wallet-history-empty {
+  border: 1px dashed var(--nova-border);
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+.wallet-history-empty p {
+  color: var(--nova-text-primary);
+  font: 500 13px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.wallet-history-empty small {
+  color: var(--nova-text-muted);
+  display: block;
+  line-height: 1.45;
+}
+
+.wallet-history-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px;
+  color: var(--nova-text-muted);
+  font: 12px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.wallet-history-source {
+  color: var(--nova-text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+
+/* --- AI Chat --- */
+.chat-log {
+  background: var(--nova-card);
+  border: 1px solid var(--nova-card-border);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.chat-message {
+  border-radius: 12px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 80%;
+  padding: 12px 14px;
+}
+
+.chat-message b {
+  display: block;
+  font: 10px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.chat-message.nova {
+  background: var(--nova-chat-nova-bg);
+  color: var(--nova-chat-nova-text);
+}
+
+.chat-message.nova b {
+  color: var(--nova-accent-secondary);
+}
+
+.chat-message.you {
+  align-self: flex-end;
+  background: var(--nova-chat-you-bg);
+  color: var(--nova-chat-you-text);
+}
+
+.chat-message.you b {
+  color: var(--nova-chat-you-text);
+  opacity: 0.75;
+}
+
+.composer {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.composer input {
+  background: var(--nova-card);
+  border: 1px solid var(--nova-input-border);
+  border-radius: 9px;
+  color: var(--nova-text-primary);
+  flex: 1;
+  min-width: 0;
+  padding: 14px;
+  transition: border-color 0.2s;
+}
+
+.composer input::placeholder {
+  color: var(--nova-text-muted);
+}
+
+.composer input:focus {
+  border-color: var(--nova-accent-secondary);
+}
+
+.composer button {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.chat-thinking {
+  opacity: 0.6;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.thinking-dots::after {
+  content: '\2026';
+  animation: dots 1.4s steps(4, end) infinite;
+}
+
+.chat-error {
+  background: var(--nova-error-bg);
+  border: 1px solid var(--nova-error-border);
+  border-radius: 8px;
+  color: var(--nova-error-text);
+  font-size: 13px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-error button {
+  background: none;
+  border: 1px solid var(--nova-error-border);
+  border-radius: 6px;
+  color: var(--nova-error-text);
+  font-size: 12px;
+  padding: 6px 12px;
+  min-height: 24px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.chat-error button:focus-visible {
+  outline: 2px solid var(--nova-error-text);
+  outline-offset: 2px;
+}
+
+.chat-error button:hover {
+  border-color: var(--nova-error-text);
+}
+
+.chat-error-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* --- Post-game Chat re-entry --- */
+.chat-postgame {
+  background: var(--nova-panel);
+  border: 1px dashed var(--nova-border);
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+  font-size: 13px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-postgame-label {
+  min-width: 0;
+}
+
+.chat-postgame button {
+  background: none;
+  border: 1px solid var(--nova-accent-secondary-dim);
+  border-radius: 6px;
+  color: var(--nova-accent-secondary);
+  font-size: 12px;
+  padding: 6px 12px;
+  min-height: 24px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.chat-postgame button:hover {
+  background: rgba(0, 245, 212, 0.08);
+}
+
+.chat-postgame button:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: 2px;
+}
+
+/* --- Notifications --- */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.toast {
+  border-radius: 10px;
+  font: 500 13px 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+  padding: 12px 18px;
+  cursor: default;
+  animation: toast-in 0.3s ease;
+  max-width: min(360px, calc(100vw - 32px));
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-dismiss {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  font: 700 16px/1 Manrope, sans-serif;
+  min-height: 24px;
+  min-width: 24px;
+  padding: 2px 8px;
+  opacity: 0.85;
+}
+
+.toast-dismiss:hover {
+  opacity: 1;
+}
+
+.toast-dismiss:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+
+.toast-success {
+  background: var(--nova-toast-success-bg);
+  border: 1px solid var(--nova-toast-success-border);
+  color: var(--nova-toast-success-text);
+}
+
+.toast-error {
+  background: var(--nova-toast-error-bg);
+  border: 1px solid var(--nova-toast-error-border);
+  color: var(--nova-toast-error-text);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* --- Auth --- */
+.auth-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.auth-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--nova-border);
+  border-top-color: var(--nova-brand);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-card {
+  max-width: 380px;
+  margin: 12vh auto 0;
+  padding: 40px;
+  border: 1px solid var(--nova-card-border);
+  border-radius: 16px;
+  background: var(--nova-card);
+  text-align: center;
+}
+
+.auth-brand {
+  margin-bottom: 28px;
+}
+
+.auth-logo {
+  display: block;
+  color: var(--nova-text-primary);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.auth-subtitle {
+  display: block;
+  color: var(--nova-brand);
+  font: 500 10px 'DM Mono', monospace;
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.auth-form input {
+  background: var(--nova-input-bg);
+  border: 1px solid var(--nova-input-border);
+  border-radius: 8px;
+  color: var(--nova-text-primary);
+  padding: 12px 14px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.auth-form input::placeholder {
+  color: var(--nova-text-muted);
+}
+
+.auth-form input:focus {
+  border-color: var(--nova-accent-secondary);
+}
+
+.auth-form button {
+  margin-top: 4px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.auth-error {
+  background: var(--nova-error-bg);
+  border: 1px solid var(--nova-error-border);
+  border-radius: 8px;
+  color: var(--nova-error-text);
+  font-size: 13px;
+  padding: 10px 12px;
+  margin: 0;
+  text-align: left;
+}
+
+.auth-toggle {
+  background: none;
+  border: 0;
+  color: var(--nova-accent-secondary);
+  font-size: 13px;
+  margin-top: 16px;
+  padding: 8px;
+  min-height: 24px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.auth-toggle:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+
+.auth-toggle:hover {
+  color: var(--nova-secondary-text);
+}
+
+.auth-link {
+  background: none;
+  border: 0;
+  color: var(--nova-text-muted);
+  font-size: 12px;
+  margin-top: 8px;
+  padding: 6px;
+  min-height: 24px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.auth-link:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+
+.auth-link:hover:not(:disabled) {
+  color: var(--nova-text-primary);
+}
+
+.auth-success {
+  background: var(--nova-card);
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  color: var(--nova-success);
+  font-size: 13px;
+  padding: 10px 12px;
+  margin: 0;
+  text-align: left;
+  line-height: 1.45;
+}
+
+.auth-label {
+  display: block;
+  color: var(--nova-text-muted);
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+  text-align: left;
+}
+
+.auth-hint {
+  color: var(--nova-text-muted);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+/* --- Profile --- */
+.profile-name-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-name-text {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.profile-name-edit-btn {
+  background: none;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+  cursor: pointer;
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+.profile-name-edit-btn:hover:not(:disabled),
+.profile-name-edit-btn:focus-visible {
+  border-color: var(--nova-accent-secondary);
+  color: var(--nova-text-primary);
+  outline: none;
+}
+
+.profile-name-edit-btn:focus-visible {
+  box-shadow: 0 0 0 2px var(--nova-border-focus);
+}
+
+.profile-name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  text-align: left;
+}
+
+.profile-name-label {
+  color: var(--nova-brand);
+  font: 500 10px 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.profile-name-input {
+  background: var(--nova-input-bg);
+  border: 1px solid var(--nova-input-border);
+  border-radius: 8px;
+  color: var(--nova-text-primary);
+  font-size: 14px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.profile-name-input:focus {
+  border-color: var(--nova-accent-secondary);
+  outline: none;
+}
+
+.profile-name-input:disabled {
+  opacity: 0.7;
+}
+
+.profile-name-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-name-actions button {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 8px 14px;
+}
+
+.profile-name-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.profile-name-cancel {
+  background: none;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+}
+
+.profile-name-error {
+  background: var(--nova-error-bg);
+  border: 1px solid var(--nova-error-border);
+  border-radius: 8px;
+  color: var(--nova-error-text);
+  font-size: 13px;
+  margin: 0;
+  padding: 8px 10px;
+}
+
+.profile-name-success {
+  color: var(--nova-success);
+  font-size: 13px;
+  margin: 0;
+}
+
+.profile-danger {
+  border: 1px solid var(--nova-error-border);
+  border-radius: 12px;
+  background: var(--nova-error-bg);
+  margin-top: 32px;
+  padding: 20px;
+}
+
+.profile-danger .eyebrow {
+  color: var(--nova-error-text);
+}
+
+.profile-danger-copy {
+  color: var(--nova-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.profile-danger-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 360px;
+  text-align: left;
+}
+
+.profile-danger-btn,
+.profile-danger-submit {
+  background: var(--nova-error-bg);
+  border: 1px solid var(--nova-error-border);
+  border-radius: 8px;
+  color: var(--nova-error-text);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 10px 14px;
+  width: fit-content;
+}
+
+.profile-danger-btn:hover:not(:disabled),
+.profile-danger-btn:focus-visible,
+.profile-danger-submit:hover:not(:disabled),
+.profile-danger-submit:focus-visible {
+  border-color: var(--nova-error);
+  outline: none;
+}
+
+.profile-danger-btn:focus-visible,
+.profile-danger-submit:focus-visible {
+  box-shadow: 0 0 0 2px var(--nova-border-focus);
+}
+
+.profile-danger-btn:disabled,
+.profile-danger-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.profile-danger-status {
+  color: var(--nova-success);
+  font-size: 14px;
+  margin: 0;
+}
+
+.profile-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr;
+}
+
+.profile-stat-card {
+  border: 1px solid var(--nova-border);
+  border-radius: 12px;
+  padding: 24px;
+  background: var(--nova-card-alt);
+  min-width: 0;
+}
+
+.profile-stat-card p {
+  color: var(--nova-brand);
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+
+.profile-stat-card strong {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--nova-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.profile-stat-card small {
+  display: block;
+  margin-top: 8px;
+  color: var(--nova-text-muted);
+  font: 12px 'DM Mono', monospace;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.profile-account {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 1px solid var(--nova-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: var(--nova-card-alt);
+  margin-bottom: 8px;
+}
+
+.profile-account-email {
+  color: var(--nova-text-secondary);
+  font: 13px 'DM Mono', monospace;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.profile-account-signout {
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--nova-text-primary);
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.profile-account-signout:hover {
+  border-color: var(--nova-brand);
+  color: var(--nova-brand);
+}
+
+
+.profile-activity {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.profile-activity-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--nova-card-alt);
+  font: 500 13px 'DM Mono', monospace;
+}
+
+.profile-outcome {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.profile-outcome-win {
+  color: var(--nova-success);
+}
+
+.profile-outcome-loss {
+  color: var(--nova-error);
+}
+
+.profile-outcome-draw {
+  color: var(--nova-warning);
+}
+
+.profile-activity-date {
+  color: var(--nova-text-secondary);
+  font-size: 12px;
+}
+
+/* Home — AI-first additions (rule-based suggestions + resumable threads) */
+.home-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+
+.home-suggestions li {
+  border-left: 2px solid var(--nova-accent);
+  color: var(--nova-text-secondary);
+  font-size: 13px;
+  padding: 2px 0 2px 10px;
+}
+
+.home-thread-row {
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.home-thread-row:hover,
+.home-thread-row:focus-visible {
+  border-color: var(--nova-accent);
+}
+
+.home-thread-title {
+  max-width: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-achievements {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-achievements-empty {
+  color: var(--nova-text-muted);
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.profile-achievement {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: var(--nova-card-alt);
+}
+
+.profile-achievement-earned {
+  border-color: var(--nova-success);
+}
+
+.profile-achievement-locked {
+  opacity: 0.55;
+}
+
+.profile-achievement-icon {
+  font-size: 20px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.profile-achievement-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-achievement-name {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0;
+  font: 500 13px 'DM Mono', monospace;
+  color: var(--nova-text-primary);
+}
+
+.profile-achievement-state {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--nova-success);
+}
+
+.profile-achievement-state-locked {
+  color: var(--nova-text-muted);
+}
+
+.profile-achievement-desc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--nova-text-muted);
+}
+
+.profile-achievement-date {
+  margin: 4px 0 0;
+  font: 500 11px 'DM Mono', monospace;
+  color: var(--nova-text-secondary);
+}
+
+.profile-insight {
+  border: 1px solid var(--nova-input-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  background: var(--nova-panel);
+  margin-top: 32px;
+}
+
+.profile-insight p {
+  color: var(--nova-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.profile-insight .eyebrow {
+  margin-bottom: 10px;
+}
+
+/* --- Leaderboard (Phase 12, read-only) --- */
+.profile-leaderboard-you {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.profile-leaderboard-you-label {
+  color: var(--nova-text-muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.profile-leaderboard-you-rank {
+  color: var(--nova-accent);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.profile-leaderboard-you-none {
+  color: var(--nova-text-muted);
+  font-size: 13px;
+}
+
+.profile-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.profile-leaderboard-head,
+.profile-leaderboard-row {
+  align-items: center;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  display: grid;
+  font: 500 13px 'DM Mono', monospace;
+  gap: 12px;
+  grid-template-columns: 48px 1fr auto;
+  padding: 12px 16px;
+}
+
+.profile-leaderboard-head {
+  background: transparent;
+  border-style: dashed;
+  color: var(--nova-text-muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.profile-leaderboard-row {
+  background: var(--nova-card-alt);
+  color: var(--nova-text-primary);
+}
+
+.profile-leaderboard-row-you {
+  background: var(--nova-card);
+  border-color: var(--nova-accent-secondary);
+}
+
+.profile-leaderboard-name {
+  overflow-wrap: anywhere;
+}
+
+.profile-leaderboard-xp {
+  color: var(--nova-text-secondary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.profile-leaderboard-error {
+  margin-bottom: 32px;
+}
+
+.profile-leaderboard-retry {
+  background: var(--nova-secondary-hover-bg);
+  border: 1px solid var(--nova-accent-secondary);
+  border-radius: 8px;
+  color: var(--nova-secondary-text);
+  cursor: pointer;
+  font: 500 13px 'DM Mono', monospace;
+  padding: 8px 16px;
+}
+
+.profile-leaderboard-retry:hover:not(:disabled),
+.profile-leaderboard-retry:focus-visible {
+  border-color: var(--nova-accent);
+  color: var(--nova-text-primary);
+}
+
+.profile-leaderboard-retry:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+
+/* --- Footer --- */
+footer {
+  border-top: 1px solid var(--nova-border);
+  color: var(--nova-footer-text);
+  font-size: 11px;
+  padding: 15px 6vw;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive
+   Mobile ≤680 · Tablet 681–1023 · Desktop ≥1024 (base styles)
+   ========================================================================== */
+
+/* --- Mobile ≤680px --- */
+@media (max-width: 680px) {
+  .topbar {
+    height: auto;
+    padding: 12px 16px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topbar-right {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  /* Balance pills keep unit labels — never bare numbers */
+  .balances {
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+  }
+  .balances span {
+    padding: 5px 8px;
+    font-size: 11px;
+    max-width: 100%;
+  }
+  .balances small {
+    display: inline;
+    font-size: inherit;
+  }
+
+  /* Sign-out keeps its "sign out" label — never an unlabeled email control */
+  .signout-btn {
+    max-width: 100%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-all;
+  }
+  .signout-btn small {
+    display: block;
+  }
+
+  /* Nav stays visible: horizontal scroll bar, never display:none */
+  .app-frame {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 140px);
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    border-bottom: 1px solid var(--nova-border);
+    border-right: 0;
+    border-left: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+    gap: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--nova-bg-primary);
+    scrollbar-width: thin;
+  }
+  .sidebar button {
+    flex: 0 0 auto;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+    padding: 10px 12px;
+    white-space: nowrap;
+    min-height: 44px;
+  }
+  .sidebar button.active {
+    border-bottom-color: var(--nova-accent-secondary);
+  }
+  .sidebar button:hover {
+    border-left-color: transparent;
+    border-bottom-color: var(--nova-accent-secondary-dim);
+  }
+
+  .content {
+    padding: 24px 16px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hero-grid,
+  .wallet-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wallet-grid strong {
+    font-size: 32px;
+  }
+
+  .exchange {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* Profile: 2-col stats, primary spans full; no crushed cards at 320px */
+  .profile-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .profile-grid .primary-card {
+    grid-column: 1 / -1;
+  }
+  .profile-stat-card {
+    padding: 16px;
+    min-width: 0;
+  }
+  .profile-stat-card p {
+    letter-spacing: 0.5px;
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+  .profile-stat-card strong {
+    font-size: 24px;
+  }
+
+  .chat-log {
+    min-height: 200px;
+  }
+  .composer {
+    flex-direction: column;
+  }
+  .composer button {
+    width: 100%;
+  }
+
+  /* Toasts: cannot overflow horizontal axis at 320px */
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    align-items: stretch;
+  }
+  .toast {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Game boards stay usable; light game world clearly framed by dark shell */
+  .game-environment {
+    padding: 16px;
+    border-top: 1px solid var(--nova-border);
+    min-height: 240px;
+  }
+  .game-environment .board {
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .game-environment .sudoku-board {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .game-environment .sudoku-numpad {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .game-environment .sudoku-puzzle-grid {
+    grid-template-columns: 1fr;
+  }
+  .game-environment .game-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Tablet 681–1023px --- */
+@media (min-width: 681px) and (max-width: 1023px) {
+  .content {
+    padding: 40px clamp(20px, 4vw, 48px);
+  }
+
+  /* Profile: 2-column stat layout so labels never crush to ~40–60px */
+  .profile-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .profile-grid .primary-card {
+    grid-column: 1 / -1;
+  }
+  .profile-stat-card {
+    min-width: 0;
+    padding: 20px;
+  }
+  .profile-stat-card p {
+    letter-spacing: 0.75px;
+    overflow-wrap: anywhere;
+  }
+
+  /* Hero / wallet stay readable beside the sidebar */
+  .hero-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .wallet-grid {
+    grid-template-columns: 1fr 1fr;
+    max-width: 100%;
+  }
+  .exchange {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  /* Game layout: stacked when minmax columns would overflow beside sidebar */
+  .game-environment .game-layout {
+    grid-template-columns: 1fr;
+  }
+  .game-environment .board {
+    max-width: 360px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .game-environment .sudoku-board {
+    width: 100%;
+    max-width: 440px;
+    box-sizing: border-box;
+  }
+  .game-environment .sudoku-puzzle-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Chat messages use more width without overflowing */
+  .chat-message {
+    max-width: 90%;
+  }
+
+  /* Sidebar remains the vertical rail (base styles) */
+  .sidebar {
+    overflow-y: auto;
+  }
+
+  .toast {
+    max-width: min(360px, calc(100vw - 48px));
+  }
+}
+
+/* Sudoku structural layout lives in the game-environment section below. */
+
+/* ==========================================================================
+   VISUAL BOUNDARY
+   NOVA/game separation is structural: dark shell (topbar + sidebar + footer)
+   frames the light .game-environment fill (see .game-mode .content rules).
+   ========================================================================== */
+
+.nova-shell.app-mode .brand span {
+  color: var(--nova-brand);
+}
+
+/* Sidebar accent when in app mode */
+.nova-shell.app-mode .sidebar button.active {
+  background: var(--nova-bg-surface);
+  color: var(--nova-text-primary);
+}
+
+/* Content padding: the game environment supplies its own padding */
+.game-mode .content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   GAME ENVIRONMENT ARCHITECTURE
+   Light environments for Tic-Tac-Toe and Sudoku.
+   Generic aliases (--bg, --surface, --accent, ...) are bound per game so
+   game rules never reference NOVA tokens directly.
+   ========================================================================== */
+
+.game-environment {
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 24px clamp(24px, 6vw, 80px) 40px;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.game-environment.game-tictactoe {
+  --bg: var(--tt-bg-primary);
+  --bg-secondary: var(--tt-bg-secondary);
+  --surface: var(--tt-surface);
+  --accent: var(--tt-accent);
+  --accent-light: var(--tt-accent-light);
+  --accent-secondary: var(--tt-accent-secondary);
+  --text-primary: var(--tt-text-primary);
+  --text-secondary: var(--tt-text-secondary);
+  --text-muted: var(--tt-text-muted);
+  --border: var(--tt-border);
+  --border-subtle: var(--tt-border-subtle);
+  --border-focus: var(--tt-border-focus);
+  --success: var(--tt-success);
+  --warning: var(--tt-warning);
+  --error: var(--tt-error);
+  --shadow-sm: var(--tt-shadow-sm);
+  --shadow-md: var(--tt-shadow-md);
+  --shadow-lg: var(--tt-shadow-lg);
+  --panel: var(--tt-panel);
+  --panel-border: var(--tt-panel-border);
+  --cell-hover: var(--tt-cell-hover);
+  --cell-filled: var(--tt-cell-filled);
+  --mark-x: var(--tt-mark-x);
+  --mark-o: var(--tt-mark-o);
+  --on-accent: var(--tt-on-accent);
+  --victory-bg: var(--tt-victory-bg);
+  --victory-border: var(--tt-victory-border);
+  --draw-bg: var(--tt-draw-bg);
+  --draw-border: var(--tt-draw-border);
+  --defeat-bg: var(--tt-defeat-bg);
+  --defeat-border: var(--tt-defeat-border);
+}
+
+.game-environment.game-sudoku {
+  --bg: var(--sudoku-bg-primary);
+  --bg-secondary: var(--sudoku-bg-secondary);
+  --surface: var(--sudoku-surface);
+  --accent: var(--sudoku-accent);
+  --accent-light: var(--sudoku-accent-light);
+  --accent-secondary: var(--sudoku-accent-secondary);
+  --text-primary: var(--sudoku-text-primary);
+  --text-secondary: var(--sudoku-text-secondary);
+  --text-muted: var(--sudoku-text-muted);
+  --border: var(--sudoku-border);
+  --border-subtle: var(--sudoku-border-subtle);
+  --border-focus: var(--sudoku-border-focus);
+  --success: var(--sudoku-success);
+  --warning: var(--sudoku-warning);
+  --error: var(--sudoku-error);
+  --shadow-sm: var(--sudoku-shadow-sm);
+  --shadow-md: var(--sudoku-shadow-md);
+  --shadow-lg: var(--sudoku-shadow-lg);
+  --panel: var(--sudoku-panel);
+  --panel-border: var(--sudoku-border-panel);
+  --cell-hover: var(--sudoku-cell-hover);
+  --same-bg: var(--sudoku-same-bg);
+  --same-border: var(--sudoku-same-border);
+  --selected-bg: var(--sudoku-selected-bg);
+  --given-text: var(--sudoku-given-text);
+  --user-text: var(--sudoku-user-text);
+  --box-border: var(--sudoku-border-box);
+  --on-accent: var(--sudoku-on-accent);
+  --conflict-bg: var(--sudoku-conflict-bg);
+  --conflict-border: var(--sudoku-conflict-border);
+  --conflict-text: var(--sudoku-conflict-text);
+  --success-bg: var(--sudoku-success-bg);
+  --success-border: var(--sudoku-success-border);
+}
+
+/* Typography inside game environments uses game tokens, not NOVA */
+.game-environment .eyebrow {
+  color: var(--accent);
+}
+.game-environment .lede {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   TIC-TAC-TOE — Light game world
+   Scoped to .game-environment.game-tictactoe so NOVA dark never leaks in.
+   60% #eef2f8 bg · 30% soft lavender tray/panels · 10% strong blue accent
+   ========================================================================== */
+
+.game-environment.game-tictactoe {
+  background: var(--tt-bg-primary);
+  color: var(--tt-text-primary);
+  min-height: 100%;
+}
+
+.game-environment.game-tictactoe h1 {
+  color: var(--tt-text-primary);
+  font-size: clamp(32px, 5vw, 54px);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 0 0 12px;
+}
+
+.game-environment.game-tictactoe .eyebrow {
+  color: var(--tt-accent);
+}
+
+.game-environment.game-tictactoe .lede {
+  color: var(--tt-text-secondary);
+  margin-bottom: 28px;
+}
+
+.game-environment.game-tictactoe .game-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+  grid-template-columns: minmax(260px, 400px) minmax(220px, 1fr);
+}
+
+/* --- Board tray (30% soft lavender) + white cells with clear boundaries --- */
+.game-environment.game-tictactoe .board {
+  background: var(--tt-panel);
+  border: 1px solid var(--tt-panel-border);
+  border-radius: 18px;
+  box-shadow: var(--tt-shadow-md);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 12px;
+}
+
+.game-environment.game-tictactoe .board button {
+  aspect-ratio: 1;
+  background: var(--tt-surface);
+  border: 2px solid var(--tt-border);
+  border-radius: 12px;
+  color: var(--tt-mark-x);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 800 clamp(36px, 6vw, 64px) / 1 Manrope, sans-serif;
+  letter-spacing: -2px;
+  padding: 0;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.game-environment.game-tictactoe .board button.is-empty:hover:not(:disabled) {
+  background: var(--tt-cell-hover);
+  border-color: var(--tt-border-focus);
+  box-shadow: inset 0 0 0 1px var(--tt-border-focus);
+}
+
+.game-environment.game-tictactoe .board button.is-filled {
+  background: var(--tt-cell-filled);
+  cursor: default;
+}
+
+.game-environment.game-tictactoe .board button.mark-x {
+  color: var(--tt-mark-x);
+}
+
+.game-environment.game-tictactoe .board button.mark-o {
+  color: var(--tt-mark-o);
+}
+
+/* Filled/end-state cells stay fully opaque — marks remain readable */
+.game-environment.game-tictactoe .board button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.game-environment.game-tictactoe .board button .mark {
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* --- Status / score / result panel — content-driven height, compact --- */
+.game-environment.game-tictactoe .game-status {
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-panel-border);
+  border-left: 4px solid var(--tt-accent);
+  border-radius: 16px;
+  box-shadow: var(--tt-shadow-sm);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-self: start;
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+}
+
+.game-environment.game-tictactoe .game-status .status-label {
+  color: var(--tt-text-muted);
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.game-environment.game-tictactoe .game-status h2 {
+  color: var(--tt-text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.game-environment.game-tictactoe .game-status p {
+  color: var(--tt-text-secondary);
+  margin: 0;
+}
+
+.game-environment.game-tictactoe .game-status.is-victory {
+  background: var(--tt-victory-bg);
+  border-color: var(--tt-victory-border);
+  border-left-color: var(--tt-success);
+}
+
+.game-environment.game-tictactoe .game-status.is-victory h2 {
+  color: var(--tt-success);
+}
+
+.game-environment.game-tictactoe .game-status.is-defeat {
+  background: var(--tt-defeat-bg);
+  border-color: var(--tt-defeat-border);
+  border-left-color: var(--tt-error);
+}
+
+.game-environment.game-tictactoe .game-status.is-defeat h2 {
+  color: var(--tt-error);
+}
+
+.game-environment.game-tictactoe .game-status.is-draw {
+  background: var(--tt-draw-bg);
+  border-color: var(--tt-draw-border);
+  border-left-color: var(--tt-warning);
+}
+
+.game-environment.game-tictactoe .game-status.is-draw h2 {
+  color: var(--tt-warning);
+}
+
+.game-environment.game-tictactoe .game-status button[type='button'],
+.game-environment.game-tictactoe .game-status button {
+  align-self: flex-start;
+  background: var(--tt-accent);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: var(--tt-shadow-sm);
+  color: var(--tt-on-accent);
+  cursor: pointer;
+  font: 700 14px Manrope, sans-serif;
+  letter-spacing: 0.2px;
+  margin-top: 16px;
+  padding: 11px 18px;
+  min-height: 42px;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.game-environment.game-tictactoe .game-status button:hover:not(:disabled) {
+  background: var(--tt-border-focus);
+  box-shadow: var(--tt-shadow-md);
+}
+
+.game-environment.game-tictactoe .game-status button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.game-environment.game-tictactoe .game-status button:focus-visible {
+  outline: 2px solid var(--tt-border-focus);
+  outline-offset: 3px;
+}
+
+.game-environment.game-tictactoe .game-status button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.game-environment.game-tictactoe .game-submitting {
+  color: var(--tt-accent);
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin: 8px 0 0;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   SUDOKU — Light game world
+   Scoped to .game-environment.game-sudoku so NOVA dark never leaks in.
+   60% #eef4fa bg · 30% soft blue tray/highlights · 10% strong orange accent
+   ========================================================================== */
+
+.game-environment.game-sudoku {
+  background: var(--sudoku-bg-primary);
+  color: var(--sudoku-text-primary);
+  min-height: 100%;
+}
+
+.game-environment.game-sudoku h1 {
+  color: var(--sudoku-text-primary);
+  font-size: clamp(32px, 5vw, 54px);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 0 0 12px;
+}
+
+.game-environment.game-sudoku .eyebrow {
+  color: var(--sudoku-accent);
+}
+
+.game-environment.game-sudoku .lede {
+  color: var(--sudoku-text-secondary);
+  margin-bottom: 24px;
+  max-width: 52ch;
+}
+
+/* --- Menu: puzzle picker --- */
+.game-environment.game-sudoku .sudoku-puzzle-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 4px;
+  max-width: 720px;
+}
+
+.game-environment.game-sudoku .sudoku-puzzle-grid .puzzle-card {
+  background: var(--sudoku-surface);
+  border: 2px solid var(--sudoku-border);
+  border-radius: 12px;
+  box-shadow: var(--sudoku-shadow-sm);
+  color: var(--sudoku-text-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 18px;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.game-environment.game-sudoku .sudoku-puzzle-grid .puzzle-card:hover:not(:disabled) {
+  background: var(--sudoku-cell-hover);
+  border-color: var(--sudoku-accent);
+  box-shadow: var(--sudoku-shadow-md);
+}
+
+.game-environment.game-sudoku .sudoku-puzzle-grid .puzzle-card:focus-visible {
+  outline: 3px solid var(--sudoku-border-focus);
+  outline-offset: 3px;
+}
+
+.game-environment.game-sudoku .sudoku-puzzle-grid .puzzle-label {
+  color: var(--sudoku-text-primary);
+  font: 700 16px/1.4 Manrope, sans-serif;
+}
+
+.game-environment.game-sudoku .sudoku-puzzle-grid .puzzle-hint {
+  color: var(--sudoku-text-muted);
+  font: 500 12px 'DM Mono', monospace;
+}
+
+/* --- Header: timer / mistakes / completion --- */
+.game-environment.game-sudoku .sudoku-header {
+  align-items: stretch;
+  background: var(--sudoku-surface);
+  border: 1px solid var(--sudoku-border-panel);
+  border-left: 4px solid var(--sudoku-accent);
+  border-radius: 12px;
+  box-shadow: var(--sudoku-shadow-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  max-width: 440px;
+  padding: 12px 16px;
+}
+
+.game-environment.game-sudoku .sudoku-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 84px;
+  padding-right: 14px;
+}
+
+.game-environment.game-sudoku .sudoku-stat + .sudoku-stat {
+  border-left: 1px solid var(--sudoku-border-subtle);
+  padding-left: 14px;
+}
+
+.game-environment.game-sudoku .sudoku-stat .stat-label {
+  color: var(--sudoku-text-muted);
+  font: 500 10px 'DM Mono', monospace;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.game-environment.game-sudoku .sudoku-stat .stat-value {
+  color: var(--sudoku-text-primary);
+  font: 700 22px/1 Manrope, sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.game-environment.game-sudoku .sudoku-stat.mistakes .stat-value {
+  color: var(--sudoku-error);
+}
+
+.game-environment.game-sudoku .sudoku-stat.mistakes .stat-value.is-zero {
+  color: var(--sudoku-text-secondary);
+}
+
+.game-environment.game-sudoku .sudoku-header .completed-badge {
+  border-left: 1px solid var(--sudoku-success-border);
+  margin-left: auto;
+  padding-left: 16px;
+}
+
+.game-environment.game-sudoku .sudoku-header .completed-badge .stat-value {
+  color: var(--sudoku-success);
+}
+
+/* --- Board frame --- */
+.game-environment.game-sudoku .sudoku-board {
+  background: var(--sudoku-surface);
+  border: 3px solid var(--sudoku-border-box);
+  border-radius: 8px;
+  box-shadow: var(--sudoku-shadow-md);
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(9, 1fr);
+  margin: 0 auto 18px;
+  max-width: 440px;
+  overflow: hidden;
+  /* Clear separation from stats panel above */
+  outline: 1px solid color-mix(in srgb, var(--sudoku-border-box) 18%, transparent);
+  outline-offset: 3px;
+}
+
+/* --- Cells --- */
+.game-environment.game-sudoku .sudoku-cell {
+  align-items: center;
+  aspect-ratio: 1;
+  background: var(--sudoku-surface);
+  border: 1px solid var(--sudoku-border);
+  color: var(--sudoku-given-text);
+  cursor: pointer;
+  display: flex;
+  font: 700 18px/1 Manrope, sans-serif;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+  width: 100%;
+}
+
+.game-environment.game-sudoku .sudoku-cell:hover:not(:disabled):not(.selected):not(.conflict) {
+  background: var(--sudoku-cell-hover);
+  border-color: var(--sudoku-accent);
+}
+
+/* Fixed / given numbers: locked, high-contrast ink */
+.game-environment.game-sudoku .sudoku-cell.locked {
+  background: var(--sudoku-bg-surface);
+  color: var(--sudoku-given-text);
+  cursor: default;
+  font-weight: 800;
+}
+
+/* User-entered numbers: orange family, distinct from given */
+.game-environment.game-sudoku .sudoku-cell:not(.locked) {
+  color: var(--sudoku-user-text);
+}
+
+/* Same-number highlight: soft blue fill + blue inset ring (bg + border, not color alone) */
+.game-environment.game-sudoku .sudoku-cell.same-number {
+  background: var(--sudoku-same-bg);
+  box-shadow: inset 0 0 0 2px var(--sudoku-same-border);
+}
+
+/* Selected cell: warm fill + thick orange inset ring (non-color cue) — distinct from :focus-visible outline */
+.game-environment.game-sudoku .sudoku-cell.selected {
+  background: var(--sudoku-selected-bg);
+  box-shadow: inset 0 0 0 3px var(--sudoku-accent);
+  color: var(--sudoku-user-text);
+  font-weight: 800;
+  z-index: 1;
+}
+
+.game-environment.game-sudoku .sudoku-cell.selected.locked {
+  color: var(--sudoku-given-text);
+}
+
+/* Conflict: multi-cue — red bg + diagonal hatch + 2px border + ! badge (not red text alone) */
+.game-environment.game-sudoku .sudoku-cell.conflict {
+  background: var(--sudoku-conflict-bg);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0,
+    transparent 4px,
+    color-mix(in srgb, var(--sudoku-conflict-border) 16%, transparent) 4px,
+    color-mix(in srgb, var(--sudoku-conflict-border) 16%, transparent) 6px
+  );
+  border: 2px solid var(--sudoku-conflict-border);
+  box-shadow: inset 0 0 0 1px var(--sudoku-conflict-border);
+  color: var(--sudoku-conflict-text);
+  font-weight: 800;
+  z-index: 2;
+}
+
+.game-environment.game-sudoku .sudoku-cell.conflict::after {
+  color: var(--sudoku-conflict-border);
+  content: '!';
+  font: 800 11px/1 'DM Mono', monospace;
+  position: absolute;
+  right: 3px;
+  top: 2px;
+}
+
+/* 3×3 box separators — strong structural lines (≥3:1, thicker than cell grid) */
+.game-environment.game-sudoku .sudoku-cell.box-left {
+  border-left: 3px solid var(--sudoku-border-box);
+}
+
+.game-environment.game-sudoku .sudoku-cell.box-top {
+  border-top: 3px solid var(--sudoku-border-box);
+}
+
+/* Essential digits stay fully opaque when disabled */
+.game-environment.game-sudoku .sudoku-cell:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+/* Keyboard focus: dark orange outline — visually distinct from selected inset ring */
+.game-environment.game-sudoku .sudoku-cell:focus-visible {
+  outline: 3px solid var(--sudoku-border-focus);
+  outline-offset: -4px;
+  z-index: 3;
+}
+
+/* --- Controls / numpad --- */
+.game-environment.game-sudoku .sudoku-controls {
+  margin: 0 auto;
+  max-width: 440px;
+}
+
+.game-environment.game-sudoku .sudoku-numpad {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 14px;
+}
+
+.game-environment.game-sudoku .numpad-btn {
+  background: var(--sudoku-surface);
+  border: 2px solid var(--sudoku-border);
+  border-radius: 10px;
+  color: var(--sudoku-text-primary);
+  cursor: pointer;
+  font: 700 20px/1 Manrope, sans-serif;
+  padding: 13px 8px;
+  min-height: 48px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.game-environment.game-sudoku .numpad-btn:hover:not(:disabled) {
+  background: var(--sudoku-accent);
+  border-color: var(--sudoku-accent);
+  box-shadow: var(--sudoku-shadow-sm);
+  color: var(--sudoku-on-accent);
+}
+
+.game-environment.game-sudoku .numpad-btn:focus-visible {
+  outline: 3px solid var(--sudoku-border-focus);
+  outline-offset: 3px;
+}
+
+.game-environment.game-sudoku .numpad-btn:disabled {
+  background: var(--sudoku-bg-secondary);
+  border-color: var(--sudoku-border-subtle);
+  color: var(--sudoku-text-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.game-environment.game-sudoku .numpad-btn.erase {
+  color: var(--sudoku-error);
+}
+
+.game-environment.game-sudoku .numpad-btn.erase:hover:not(:disabled) {
+  background: var(--sudoku-conflict-bg);
+  border-color: var(--sudoku-conflict-border);
+  color: var(--sudoku-conflict-text);
+}
+
+/* --- Secondary actions: Quit / New Puzzle --- */
+.game-environment.game-sudoku .sudoku-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: stretch;
+}
+
+.game-environment.game-sudoku .sudoku-actions .btn {
+  flex: 1;
+  min-width: 0;
+}
+
+.game-environment.game-sudoku .btn {
+  background: var(--sudoku-surface);
+  border: 2px solid var(--sudoku-border);
+  border-radius: 10px;
+  color: var(--sudoku-text-primary);
+  cursor: pointer;
+  font: 700 14px Manrope, sans-serif;
+  letter-spacing: 0.2px;
+  padding: 12px 16px;
+  min-height: 46px;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.game-environment.game-sudoku .btn.secondary,
+.game-environment.game-sudoku .btn.secondary:focus-visible {
+  background: var(--sudoku-surface);
+  border: 2px solid var(--sudoku-border);
+  color: var(--sudoku-text-primary);
+}
+
+.game-environment.game-sudoku .btn:hover:not(:disabled),
+.game-environment.game-sudoku .btn.secondary:hover:not(:disabled) {
+  background: var(--sudoku-accent);
+  border-color: var(--sudoku-accent);
+  box-shadow: var(--sudoku-shadow-sm);
+  color: var(--sudoku-on-accent);
+}
+
+.game-environment.game-sudoku .btn:focus-visible,
+.game-environment.game-sudoku .btn.secondary:focus-visible {
+  outline: 3px solid var(--sudoku-border-focus);
+  outline-offset: 3px;
+}
+
+.game-environment.game-sudoku .btn:disabled,
+.game-environment.game-sudoku .btn.secondary:disabled {
+  background: var(--sudoku-bg-secondary);
+  border-color: var(--sudoku-border-subtle);
+  color: var(--sudoku-text-muted);
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+/* Completion banner */
+.game-environment.game-sudoku.is-completed .sudoku-board {
+  border-color: var(--sudoku-success-border);
+  box-shadow: 0 0 0 3px var(--sudoku-success-bg), var(--sudoku-shadow-md);
+}
+
+/* ==========================================================================
+   GLOBAL FOCUS ARCHITECTURE
+   One designed :focus-visible system for dark NOVA + light game surfaces.
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+
+/* Dark NOVA surfaces: ensure ring stays ≥3:1 against deep backgrounds */
+.nova-shell :focus-visible,
+.nova-shell button:focus-visible,
+.nova-shell a:focus-visible,
+.nova-shell input:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+
+/* Deep teal insight cards: cyan ring stays visible — keep default;
+   dark outline only where cyan would drop below 3:1 on light fills */
+.insight-card :focus-visible {
+  outline-color: var(--nova-cta-text);
+}
+
+/* Light game environments use each game's focus token (≥3:1 on their surfaces) */
+.game-environment :focus-visible {
+  outline: 3px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Never remove outline without a replacement ring */
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+  outline: none;
+}
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--nova-accent-secondary);
+  outline-offset: 2px;
+}
+.game-environment button:focus-visible,
+.game-environment input:focus-visible,
+.game-environment [tabindex]:focus-visible {
+  outline: 3px solid var(--border-focus);
+}
+
+/* ==========================================================================
+   VISUALLY HIDDEN (screen-reader only)
+   ========================================================================== */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .toast {
+    animation: none;
+  }
+
+  .chat-thinking,
+  .game-submitting,
+  .thinking-dots::after,
+  .auth-loading-spinner {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .thinking-dots::after {
+    content: '';
+  }
+}
+
+/* ==========================================================================
+   UPGRADE ADDENDUM — AI-first shell, Games Hub, chat threads, Ball Run,
+   Water Sort. Appended after the original sheets so nothing above is
+   re-ordered: new selectors only, all game styles scoped per environment.
+   ========================================================================== */
+
+/* --- Back bar: return from a launched game to the Games Hub ------------- */
+.game-backbar {
+  background: var(--nova-bg-primary);
+  border-bottom: 1px solid var(--nova-border);
+  padding: 14px clamp(16px, 4vw, 40px);
+}
+
+.game-backbar button {
+  background: none;
+  border: 0;
+  color: var(--nova-accent-secondary);
+  cursor: pointer;
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin: 0;
+  padding: 6px 0;
+  text-transform: uppercase;
+}
+
+.game-backbar button:hover {
+  color: var(--nova-accent-secondary);
+  text-decoration: underline;
+}
+
+.game-backbar button:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: 3px;
+}
+
+/* --- Games Hub cards ---------------------------------------------------- */
+.game-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card h2 {
+  margin-top: 4px;
+}
+
+.game-card-reward {
+  color: var(--nova-accent-secondary);
+  display: block;
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 0.6px;
+  line-height: 1.5;
+  margin: 12px 0 16px;
+}
+
+.game-card button {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* --- Progression table (game-specific progress) ------------------------- */
+.progression-table {
+  background: var(--nova-card);
+  border: 1px solid var(--nova-card-border);
+  border-radius: 14px;
+  max-width: 860px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+}
+
+.progression-row {
+  align-items: center;
+  border-bottom: 1px solid var(--nova-card-border);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(110px, 1.4fr) repeat(5, minmax(64px, 1fr));
+  min-width: 560px;
+  padding: 12px clamp(14px, 3vw, 24px);
+}
+
+.progression-row:last-child {
+  border-bottom: 0;
+}
+
+.progression-row span {
+  color: var(--nova-text-secondary);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.progression-row span:first-child {
+  color: var(--nova-text-primary);
+  font-weight: 600;
+}
+
+.progression-head {
+  background: var(--nova-card-alt);
+  border-bottom: 1px solid var(--nova-card-border);
+}
+
+.progression-head span {
+  color: var(--nova-text-muted) !important;
+  font: 500 10px 'DM Mono', monospace !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   CHAT — conversation sidebar, thread list, modes, attachments
+   ========================================================================== */
+
+.chat-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(16px, 2vw, 28px);
+  grid-template-columns: minmax(200px, 250px) minmax(0, 1fr);
+}
+
+.chat-sidebar-toggle {
+  display: none;
+}
+
+.chat-sidebar {
+  background: var(--nova-card);
+  border: 1px solid var(--nova-card-border);
+  border-radius: 14px;
+  padding: 14px;
+  position: sticky;
+  top: 16px;
+}
+
+.chat-new-thread {
+  background: var(--nova-bg-surface);
+  border: 1px solid var(--nova-input-border);
+  border-radius: 9px;
+  color: var(--nova-text-primary);
+  cursor: pointer;
+  font: 600 13px Manrope, sans-serif;
+  margin: 0;
+  padding: 11px 12px;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+
+.chat-new-thread:hover {
+  background: var(--nova-secondary-hover-bg);
+  border-color: var(--nova-accent-secondary);
+}
+
+.chat-new-thread:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: 2px;
+}
+
+.chat-threads-error {
+  color: var(--nova-error-text);
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 10px 0 0;
+}
+
+.chat-thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 12px 0 0;
+  max-height: min(52vh, 460px);
+  overflow-y: auto;
+  padding: 0;
+}
+
+.chat-thread-list > li {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  display: flex;
+  gap: 4px;
+  min-width: 0;
+}
+
+.chat-thread-list > li.is-active {
+  background: var(--nova-bg-surface);
+  border-color: var(--nova-input-border);
+}
+
+.chat-thread {
+  background: none;
+  border: 0;
+  color: var(--nova-text-secondary);
+  cursor: pointer;
+  flex: 1;
+  font: 500 13px Manrope, sans-serif;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 9px 8px 9px 10px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-thread:hover {
+  color: var(--nova-text-primary);
+}
+
+.chat-thread-list > li.is-active .chat-thread {
+  color: var(--nova-text-primary);
+  font-weight: 600;
+}
+
+.chat-thread:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: -2px;
+  border-radius: 7px;
+}
+
+.chat-thread-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2px;
+  padding-right: 6px;
+}
+
+.chat-thread-actions button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--nova-text-muted);
+  cursor: pointer;
+  font: 500 10px 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 5px 6px;
+  text-transform: uppercase;
+}
+
+.chat-thread-actions button:hover {
+  border-color: var(--nova-border);
+  color: var(--nova-text-primary);
+}
+
+.chat-thread-actions button:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: 1px;
+}
+
+.chat-thread-empty {
+  color: var(--nova-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 4px;
+}
+
+.chat-thread-rename {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px;
+}
+
+.chat-thread-rename input {
+  background: var(--nova-input-bg);
+  border: 1px solid var(--nova-input-border);
+  border-radius: 6px;
+  color: var(--nova-text-primary);
+  flex: 1;
+  font-size: 12px;
+  min-width: 0;
+  padding: 6px 8px;
+}
+
+.chat-thread-rename button {
+  background: var(--nova-bg-surface);
+  border: 1px solid var(--nova-border);
+  border-radius: 6px;
+  color: var(--nova-text-primary);
+  cursor: pointer;
+  font: 500 10px 'DM Mono', monospace;
+  margin: 0;
+  padding: 6px 7px;
+  text-transform: uppercase;
+}
+
+.chat-thread-rename button:hover {
+  border-color: var(--nova-accent-secondary);
+}
+
+.chat-panel {
+  min-width: 0;
+}
+
+.chat-toolbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 14px;
+}
+
+.chat-modes {
+  background: var(--nova-card);
+  border: 1px solid var(--nova-card-border);
+  border-radius: 10px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+}
+
+.chat-modes button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--nova-text-secondary);
+  cursor: pointer;
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 7px 12px;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+}
+
+.chat-modes button:hover {
+  color: var(--nova-text-primary);
+}
+
+.chat-modes button.is-active {
+  background: var(--nova-accent-secondary);
+  border-color: var(--nova-accent-secondary);
+  color: var(--nova-cta-text);
+  font-weight: 700;
+}
+
+.chat-modes button:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: 2px;
+}
+
+.chat-mode-hint {
+  color: var(--nova-text-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.chat-export {
+  background: none;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+  cursor: pointer;
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin: 0 0 0 auto;
+  padding: 9px 14px;
+  text-transform: uppercase;
+}
+
+.chat-export:hover:not(:disabled) {
+  border-color: var(--nova-accent-secondary);
+  color: var(--nova-text-primary);
+}
+
+.chat-export:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.chat-export:focus-visible {
+  outline: 2px solid var(--nova-border-focus);
+  outline-offset: 2px;
+}
+
+.chat-attach {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.chat-attach-label {
+  background: var(--nova-bg-surface);
+  border: 1px dashed var(--nova-input-border);
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+  cursor: pointer;
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+  margin: 0;
+  max-width: 240px;
+  overflow: hidden;
+  padding: 9px 12px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.chat-attach-label:hover {
+  border-color: var(--nova-accent-secondary);
+  color: var(--nova-text-primary);
+}
+
+.chat-attach input[type='file'] {
+  color: var(--nova-text-muted);
+  font-size: 12px;
+  max-width: 220px;
+}
+
+.chat-attach button {
+  background: none;
+  border: 1px solid var(--nova-border);
+  border-radius: 8px;
+  color: var(--nova-text-secondary);
+  cursor: pointer;
+  font: 500 11px 'DM Mono', monospace;
+  margin: 0;
+  padding: 9px 12px;
+  text-transform: uppercase;
+}
+
+.chat-attach button:hover:not(:disabled) {
+  border-color: var(--nova-error);
+  color: var(--nova-error-text);
+}
+
+.chat-attach-error {
+  color: var(--nova-error-text);
+  font-size: 12px;
+}
+
+.chat-media {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  display: block;
+  margin: 0 0 10px;
+  max-height: 320px;
+  max-width: min(100%, 380px);
+  object-fit: contain;
+}
+
+.chat-message.you .chat-media {
+  border-color: rgba(7, 11, 20, 0.25);
+}
+
+.chat-audio {
+  display: block;
+  margin: 0 0 10px;
+  max-width: min(100%, 420px);
+  width: 100%;
+}
+
+/* ==========================================================================
+   BALL RUN — light game world (reflex)
+   Scoped to .game-environment.game-ball-run so NOVA dark never leaks in.
+   ========================================================================== */
+
+.game-environment.game-ball-run {
+  --bg: var(--ball-bg-primary);
+  --bg-secondary: var(--ball-bg-secondary);
+  --surface: var(--ball-surface);
+  --accent: var(--ball-accent);
+  --accent-light: var(--ball-accent-light);
+  --accent-secondary: var(--ball-accent-secondary);
+  --text-primary: var(--ball-text-primary);
+  --text-secondary: var(--ball-text-secondary);
+  --text-muted: var(--ball-text-muted);
+  --border: var(--ball-border);
+  --border-subtle: var(--ball-border-subtle);
+  --border-focus: var(--ball-border-focus);
+  --success: var(--ball-success);
+  --warning: var(--ball-warning);
+  --error: var(--ball-error);
+  --shadow-sm: var(--ball-shadow-sm);
+  --shadow-md: var(--ball-shadow-md);
+  --shadow-lg: var(--ball-shadow-lg);
+  --panel: var(--ball-panel);
+  --panel-border: var(--ball-panel-border);
+  --on-accent: var(--ball-on-accent);
+
+  background: var(--ball-bg-primary);
+  color: var(--ball-text-primary);
+  min-height: 100%;
+}
+
+.game-environment.game-ball-run h1 {
+  color: var(--ball-text-primary);
+  font-size: clamp(30px, 5vw, 50px);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 0 0 12px;
+}
+
+.game-environment.game-ball-run .eyebrow {
+  color: var(--ball-accent);
+}
+
+.game-environment.game-ball-run .lede {
+  color: var(--ball-text-secondary);
+  margin-bottom: 28px;
+}
+
+.game-environment.game-ball-run .game-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+  grid-template-columns: minmax(260px, 420px) minmax(220px, 1fr);
+}
+
+.game-environment.game-ball-run .br-track {
+  background: var(--ball-track);
+  border: 2px solid var(--ball-panel-border);
+  border-radius: 18px;
+  box-shadow: var(--ball-shadow-md);
+  max-width: 420px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.game-environment.game-ball-run .br-lane {
+  border-right: 1px dashed var(--ball-lane-line);
+  bottom: 0;
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 33.333%;
+}
+
+.game-environment.game-ball-run .br-lane:last-of-type {
+  border-right: 0;
+}
+
+.game-environment.game-ball-run .br-wall {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(3, 1fr);
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.game-environment.game-ball-run .br-wall i {
+  border-radius: 5px;
+  display: block;
+  height: 26px;
+  margin: 0 6px;
+}
+
+.game-environment.game-ball-run .br-wall i.is-bar {
+  background: var(--ball-wall);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.game-environment.game-ball-run .br-wall i.is-gap {
+  background: transparent;
+}
+
+.game-environment.game-ball-run .br-ball {
+  background: radial-gradient(circle at 34% 30%, var(--ball-ball-inner), var(--ball-ball));
+  border: 3px solid var(--ball-accent);
+  border-radius: 50%;
+  box-shadow: var(--ball-shadow-sm);
+  display: block;
+  height: 32px;
+  position: absolute;
+  transition: left 0.1s linear;
+  width: 32px;
+  z-index: 2;
+}
+
+.game-environment.game-ball-run .br-elapsed {
+  color: var(--ball-text-muted);
+  font: 500 13px 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+  margin: 10px 0 0;
+}
+
+.game-environment.game-ball-run .br-lane-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+}
+
+.game-environment.game-ball-run .br-lane-controls button {
+  background: var(--ball-surface);
+  border: 2px solid var(--ball-border);
+  border-radius: 10px;
+  color: var(--ball-text-primary);
+  cursor: pointer;
+  font: 700 16px Manrope, sans-serif;
+  margin: 0;
+  padding: 12px 0;
+}
+
+.game-environment.game-ball-run .br-lane-controls button:hover:not(:disabled) {
+  background: var(--ball-accent-secondary);
+  border-color: var(--ball-border-focus);
+}
+
+.game-environment.game-ball-run .br-lane-controls button:disabled {
+  background: var(--ball-accent);
+  border-color: var(--ball-accent);
+  color: var(--ball-on-accent);
+  cursor: default;
+}
+
+.game-environment.game-ball-run .br-lane-controls button:focus-visible {
+  outline: 2px solid var(--ball-border-focus);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   WATER SORT — light game world (puzzle)
+   Scoped to .game-environment.game-water-sort so NOVA dark never leaks in.
+   ========================================================================== */
+
+.game-environment.game-water-sort {
+  --bg: var(--water-bg-primary);
+  --bg-secondary: var(--water-bg-secondary);
+  --surface: var(--water-surface);
+  --accent: var(--water-accent);
+  --accent-light: var(--water-accent-light);
+  --accent-secondary: var(--water-accent-secondary);
+  --text-primary: var(--water-text-primary);
+  --text-secondary: var(--water-text-secondary);
+  --text-muted: var(--water-text-muted);
+  --border: var(--water-border);
+  --border-subtle: var(--water-border-subtle);
+  --border-focus: var(--water-border-focus);
+  --success: var(--water-success);
+  --warning: var(--water-warning);
+  --error: var(--water-error);
+  --shadow-sm: var(--water-shadow-sm);
+  --shadow-md: var(--water-shadow-md);
+  --shadow-lg: var(--water-shadow-lg);
+  --panel: var(--water-panel);
+  --panel-border: var(--water-panel-border);
+  --on-accent: var(--water-on-accent);
+
+  background: var(--water-bg-primary);
+  color: var(--water-text-primary);
+  min-height: 100%;
+}
+
+.game-environment.game-water-sort h1 {
+  color: var(--water-text-primary);
+  font-size: clamp(30px, 5vw, 50px);
+  letter-spacing: -2.5px;
+  line-height: 1;
+  margin: 0 0 12px;
+}
+
+.game-environment.game-water-sort .eyebrow {
+  color: var(--water-accent);
+}
+
+.game-environment.game-water-sort .lede {
+  color: var(--water-text-secondary);
+  margin-bottom: 28px;
+}
+
+.game-environment.game-water-sort .game-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+  grid-template-columns: minmax(300px, 1.4fr) minmax(220px, 1fr);
+}
+
+.game-environment.game-water-sort .ws-board {
+  align-content: flex-start;
+  align-items: flex-end;
+  background: var(--water-panel);
+  border: 1px solid var(--water-panel-border);
+  border-radius: 18px;
+  box-shadow: var(--water-shadow-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  min-height: 320px;
+  padding: 22px 18px;
+}
+
+.game-environment.game-water-sort .ws-empty {
+  align-self: center;
+  color: var(--water-text-muted);
+  font-size: 14px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.game-environment.game-water-sort .ws-tube {
+  background: var(--water-tube);
+  border: 2px solid var(--water-border);
+  border-radius: 14px 14px 20px 20px;
+  box-shadow: var(--water-shadow-sm);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 232px;
+  margin: 0;
+  padding: 8px 6px 0;
+  position: relative;
+  transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+  width: 58px;
+}
+
+.game-environment.game-water-sort .ws-tube:hover:not(:disabled) {
+  border-color: var(--water-border-focus);
+}
+
+.game-environment.game-water-sort .ws-tube:focus-visible {
+  outline: 2px solid var(--water-border-focus);
+  outline-offset: 2px;
+}
+
+.game-environment.game-water-sort .ws-tube.is-selected {
+  border-color: var(--water-accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+  transform: translateY(-10px);
+}
+
+.game-environment.game-water-sort .ws-tube:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.game-environment.game-water-sort .ws-tube-body {
+  border-radius: 8px;
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+  gap: 2px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.game-environment.game-water-sort .ws-ball {
+  border: 1px solid rgba(15, 23, 42, 0.22);
+  border-radius: 7px;
+  display: block;
+  flex: 0 0 calc((100% - 6px) / 4);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.12);
+  width: 100%;
+}
+
+.game-environment.game-water-sort .ws-tube-base {
+  background: var(--water-accent);
+  border-radius: 0 0 18px 18px;
+  display: block;
+  flex-shrink: 0;
+  height: 8px;
+  margin: 0 -6px;
+}
+
+/* ==========================================================================
+   SHARED GAME STATUS PANEL — Ball Run + Water Sort
+   (Tic-Tac-Toe keeps its own more specific block above.)
+   ========================================================================== */
+
+.game-environment.game-ball-run .game-status,
+.game-environment.game-water-sort .game-status {
+  align-self: start;
+  background: var(--surface);
+  border: 1px solid var(--panel-border);
+  border-left: 4px solid var(--accent);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 380px;
+  padding: 20px 22px;
+  width: 100%;
+}
+
+.game-environment.game-ball-run .game-status .status-label,
+.game-environment.game-water-sort .game-status .status-label {
+  color: var(--text-muted);
+  font: 500 11px 'DM Mono', monospace;
+  letter-spacing: 1px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.game-environment.game-ball-run .game-status h2,
+.game-environment.game-water-sort .game-status h2 {
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.game-environment.game-ball-run .game-status p,
+.game-environment.game-water-sort .game-status p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.game-environment.game-ball-run .game-submitting,
+.game-environment.game-water-sort .game-submitting {
+  color: var(--accent);
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.game-environment.game-ball-run .game-status button,
+.game-environment.game-water-sort .game-status button {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  color: var(--on-accent);
+  cursor: pointer;
+  font: 700 14px Manrope, sans-serif;
+  margin: 14px 0 0;
+  padding: 12px 16px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.game-environment.game-ball-run .game-status button:hover:not(:disabled),
+.game-environment.game-water-sort .game-status button:hover:not(:disabled) {
+  background: var(--accent-light);
+  border-color: var(--accent-light);
+}
+
+.game-environment.game-ball-run .game-status button:disabled,
+.game-environment.game-water-sort .game-status button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.game-environment.game-ball-run .game-status button:focus-visible,
+.game-environment.game-water-sort .game-status button:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.game-environment.game-ball-run .game-status button + button,
+.game-environment.game-water-sort .game-status button + button {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.game-environment.game-ball-run .game-status button + button:hover,
+.game-environment.game-water-sort .game-status button + button:hover {
+  background: var(--accent-secondary);
+  border-color: var(--border-focus);
+}
+
+/* ==========================================================================
+   RESPONSIVE — new surfaces (chat threads, progression, new games)
+   These rules are appended last so they win over earlier equal-specificity
+   game-layout rules inside the original media queries.
+   ========================================================================== */
+
+@media (max-width: 680px) {
+  .chat-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-sidebar-toggle {
+    background: var(--nova-card);
+    border: 1px solid var(--nova-card-border);
+    border-radius: 9px;
+    color: var(--nova-text-primary);
+    cursor: pointer;
+    display: block;
+    font: 500 12px 'DM Mono', monospace;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    text-transform: uppercase;
+    width: 100%;
+  }
+
+  .chat-sidebar-toggle:focus-visible {
+    outline: 2px solid var(--nova-border-focus);
+    outline-offset: 2px;
+  }
+
+  .chat-sidebar {
+    background: var(--nova-card);
+    border: 1px solid var(--nova-card-border);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    display: none;
+    left: 0;
+    margin-bottom: 14px;
+    padding: 14px;
+    position: static;
+    right: 0;
+    z-index: 30;
+  }
+
+  .chat-sidebar.is-open {
+    display: block;
+  }
+
+  .chat-thread-list {
+    max-height: 44vh;
+  }
+
+  .chat-toolbar {
+    gap: 8px;
+  }
+
+  .chat-modes {
+    width: 100%;
+  }
+
+  .chat-modes button {
+    flex: 1;
+    padding: 9px 6px;
+  }
+
+  .chat-mode-hint {
+    flex: 1 1 100%;
+    order: 3;
+  }
+
+  .chat-export {
+    margin-left: 0;
+    order: 2;
+  }
+
+  .chat-message {
+    max-width: 92%;
+  }
+
+  .game-environment.game-tictactoe .game-layout,
+  .game-environment.game-ball-run .game-layout,
+  .game-environment.game-water-sort .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .game-environment.game-ball-run .br-track,
+  .game-environment.game-water-sort .ws-board {
+    margin: 0 auto;
+  }
+
+  .game-environment.game-ball-run .game-status,
+  .game-environment.game-water-sort .game-status {
+    max-width: none;
+  }
+
+  .progression-row {
+    min-width: 520px;
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1023px) {
+  .game-environment.game-tictactoe .game-layout,
+  .game-environment.game-ball-run .game-layout,
+  .game-environment.game-water-sort .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .game-environment.game-ball-run .br-track,
+  .game-environment.game-water-sort .ws-board {
+    margin: 0 auto;
+  }
+
+  .game-environment.game-ball-run .game-status,
+  .game-environment.game-water-sort .game-status {
+    max-width: none;
+  }
+
+  .chat-layout {
+    grid-template-columns: minmax(180px, 210px) minmax(0, 1fr);
+  }
+}

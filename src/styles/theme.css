@@ -1,0 +1,331 @@
+/* ==========================================================================
+   NOVA AI Play — Centralized Theme Architecture
+   Two completely separate visual systems:
+   1. NOVA Application Theme (--nova-*) — dark futuristic
+   2. Game Environment Themes (--tt-*, --sudoku-*, --ball-*, --water-*) — light
+      independent worlds, one per game, never sharing NOVA surfaces
+
+   Games consume game-scoped tokens only, via .game-environment aliases
+   defined in src/index.css. Games must never inherit --nova-accent,
+   --nova-accent-light, or NOVA dark surfaces.
+   ========================================================================== */
+
+/* ==========================================================================
+   NOVA APPLICATION THEME — Dark Futuristic
+   60% dominant: Deep Space (dark foundation)
+   30% secondary: Neon Cyan / Teal visual system
+   10% accent: Electric Magenta
+
+   Purple hex family is intentionally removed from the secondary role.
+   Cyan owns borders, focus, links, nav, progress, and secondary controls.
+   Magenta is reserved for eyebrows, primary CTAs, and small highlights.
+   ========================================================================== */
+
+:root {
+  /* --- 60% Dominant: Deep Space / Dark Backgrounds --- */
+  --nova-bg-primary: #070b14;
+  --nova-bg-secondary: #0d1424;
+  --nova-bg-surface: #152033;
+  --nova-card: #0b1220;
+  --nova-card-alt: #101a2c;
+  --nova-card-border: #1e2d44;
+  --nova-input-bg: #0b1220;
+  --nova-panel: #0e1a2c;
+
+  /* --- 30% Secondary: Neon Cyan / Teal system --- */
+  /* Interactive system: focus, brand sub, nav, progress, secondary UI */
+  --nova-accent-secondary: #00f5d4;
+  --nova-accent-secondary-dim: #2a8a8e;
+  --nova-brand: #00f5d4;
+  --nova-border-focus: #00f5d4;
+  /* Control boundaries — ≥3:1 on card/input surfaces (WCAG 1.4.11) */
+  --nova-input-border: #2a8a8e;
+  --nova-progress-fill: #00f5d4;
+  --nova-progress-track: #152036;
+  --nova-chat-nova-bg: #0d3b38;
+  --nova-chat-nova-text: #d5fffb;
+  --nova-insight: #0d3b38;
+  --nova-insight-border: #1f6b70;
+  --nova-insight-text: #e6fffb;
+  --nova-insight-label: #00f5d4;
+  --nova-secondary-text: #5eead4;
+  --nova-secondary-hover-bg: #152536;
+
+  /* --- 10% Accent: Electric Magenta --- */
+  /* Eyebrows, primary CTAs, flow arrows — never large surfaces */
+  --nova-accent: #ff00c8;
+  --nova-accent-light: #ff4dff;
+  --nova-cta: #ff00c8;
+  --nova-cta-text: #070b14;
+  --nova-cta-hover: #ff4dff;
+  --nova-chat-you-bg: #ff00c8;
+  --nova-chat-you-text: #070b14;
+
+  /* --- Semantic Text (WCAG 4.5:1 on body and cards) --- */
+  --nova-text-primary: #f0f6ff;
+  --nova-text-secondary: #b6c2d6;
+  --nova-text-muted: #8fa0b8;
+  --nova-footer-text: #8fa0b8;
+
+  /* --- Borders --- */
+  --nova-border: #1e2d44;
+  --nova-border-subtle: #2a3f5c;
+
+  /* --- Status Colors --- */
+  --nova-success: #34d399;
+  --nova-warning: #fbbf24;
+  --nova-error: #f87171;
+  --nova-error-bg: #2d1016;
+  --nova-error-border: #7f1d1d;
+  --nova-error-text: #fecdd3;
+
+  /* --- Toasts --- */
+  --nova-toast-success-bg: #0d2918;
+  --nova-toast-success-border: #166534;
+  --nova-toast-success-text: #86efac;
+  --nova-toast-error-bg: #331016;
+  --nova-toast-error-border: #991b1b;
+  --nova-toast-error-text: #fca5a5;
+
+  /* --- Shadows --- */
+  --nova-shadow-sm: rgba(0, 0, 0, 0.4);
+  --nova-shadow-md: rgba(0, 0, 0, 0.3);
+  --nova-shadow-lg: rgba(0, 0, 0, 0.5);
+
+  /* --- Gradients (subtle; no heavy glow/glass) --- */
+  --nova-gradient-bg: radial-gradient(ellipse at 76% 8%, rgba(0, 245, 212, 0.05) 0, transparent 35%),
+    #070b14;
+  --nova-gradient-panel: linear-gradient(135deg, #0b1220 0, #0d1424 100%);
+}
+
+/* ==========================================================================
+   TIC-TAC-TOE THEME — Light Environment
+   60% dominant: Very light neutral/blue background
+   30% secondary: Soft blue/lavender surfaces (board tray, panels)
+   10% accent: Strong blue (#2563eb)
+
+   Contrast (WCAG):
+   cell border #5c6b82 on white 5.41 / hover 4.84 / filled 4.66 / panel 4.28
+   white-on-accent 5.17 · accent-as-text on bg 4.60 · focus #1d4ed8 ≥5.3
+   X #2563eb and O #334155 are large-text safe on all cell fills (≥3:1)
+   ========================================================================== */
+
+:root {
+  /* --- 60% Dominant: Light neutral/blue backgrounds --- */
+  --tt-bg-primary: #eef2f8;
+  --tt-bg-secondary: #e2e9f4;
+  --tt-bg-surface: #f5f7fb;
+  --tt-surface: #ffffff;
+
+  /* --- 30% Secondary: Soft blue/lavender surfaces --- */
+  --tt-accent-secondary: #dde5f5;
+  --tt-panel: #dde5f5;
+  --tt-panel-border: #64748b;
+  --tt-cell-hover: #eef2ff;
+  --tt-cell-filled: #e8eefc;
+
+  /* --- 10% Accent: Strong blue --- */
+  --tt-accent: #2563eb;
+  --tt-accent-light: #3b82f6;
+  --tt-on-accent: #ffffff;
+
+  /* --- Marks (readable on white / hover / filled — large text) --- */
+  --tt-mark-x: #2563eb;
+  --tt-mark-o: #334155;
+
+  /* --- Text Colors --- */
+  --tt-text-primary: #1e293b;
+  --tt-text-secondary: #475569;
+  --tt-text-muted: #5b6475;
+
+  /* --- Borders (cell boundary ≥3:1 on every cell surface) --- */
+  --tt-border: #5c6b82;
+  --tt-border-subtle: #8b97ab;
+  --tt-border-focus: #1d4ed8;
+
+  /* --- Status Colors --- */
+  --tt-success: #047857;
+  --tt-warning: #b45309;
+  --tt-error: #dc2626;
+  --tt-victory-bg: #ecfdf5;
+  --tt-victory-border: #059669;
+  --tt-draw-bg: #fffbeb;
+  --tt-draw-border: #b45309;
+  --tt-defeat-bg: #fef2f2;
+  --tt-defeat-border: #dc2626;
+
+  /* --- Shadows --- */
+  --tt-shadow-sm: rgba(15, 23, 42, 0.06);
+  --tt-shadow-md: rgba(15, 23, 42, 0.1);
+  --tt-shadow-lg: rgba(15, 23, 42, 0.14);
+}
+
+/* ==========================================================================
+   SUDOKU THEME — Light Environment (independent of NOVA dark)
+   60% dominant: Very light neutral/blue background
+   30% secondary: Soft blue surfaces (tray, same-number highlight)
+   10% accent: Strong orange (#c2410c) for focus, CTAs, accents
+
+   Contrast (WCAG):
+   normal grid #5c6b82 on white 5.41 / soft blue 4.26 / bg 4.90 (≥3:1)
+   3x3 box sep #334155 on white 10.35
+   same-number bg #dbeafe + inset ring #2563eb 5.17 (visible, not color-only)
+   focus ring #9a3412 on white 7.31 / bg 6.61 (distinct from selection)
+   conflict: hatch + 2px #b91c1c border + ! badge + aria-invalid (not color-only)
+   white-on-accent 5.18 · orange-as-text on bg 4.69
+   ========================================================================== */
+
+:root {
+  /* --- 60% Dominant: Very light neutral/blue backgrounds --- */
+  --sudoku-bg-primary: #eef4fa;
+  --sudoku-bg-secondary: #e2ebf5;
+  --sudoku-bg-surface: #f7fafc;
+  --sudoku-surface: #ffffff;
+
+  /* --- 30% Secondary: Soft blue surfaces --- */
+  --sudoku-accent-secondary: #d6e4f8;
+  --sudoku-panel: #d6e4f8;
+  --sudoku-panel-border: #64748b;
+  --sudoku-cell-hover: #f0f7ff;
+  --sudoku-same-bg: #dbeafe;
+  --sudoku-same-border: #2563eb;
+  --sudoku-selected-bg: #fff7ed;
+
+  /* --- 10% Accent: Strong orange --- */
+  --sudoku-accent: #c2410c;
+  --sudoku-accent-light: #ea580c;
+  --sudoku-on-accent: #ffffff;
+
+  /* --- Text / marks --- */
+  --sudoku-text-primary: #0f172a;
+  --sudoku-text-secondary: #475569;
+  --sudoku-text-muted: #5b6475;
+  --sudoku-given-text: #0f172a;
+  --sudoku-user-text: #9a3412;
+
+  /* --- Borders (UI boundaries ≥3:1 on every cell fill) --- */
+  --sudoku-border: #5c6b82;
+  --sudoku-border-subtle: #8b97ab;
+  --sudoku-border-box: #334155;
+  --sudoku-border-focus: #9a3412;
+  --sudoku-border-panel: #64748b;
+
+  /* --- Conflict (multi-cue: bg + hatch + border + text) --- */
+  --sudoku-conflict-bg: #fee2e2;
+  --sudoku-conflict-border: #b91c1c;
+  --sudoku-conflict-text: #991b1b;
+
+  /* --- Status --- */
+  --sudoku-success: #047857;
+  --sudoku-success-bg: #ecfdf5;
+  --sudoku-success-border: #059669;
+  --sudoku-warning: #b45309;
+  --sudoku-error: #b91c1c;
+
+  /* --- Shadows --- */
+  --sudoku-shadow-sm: rgba(15, 23, 42, 0.06);
+  --sudoku-shadow-md: rgba(15, 23, 42, 0.1);
+  --sudoku-shadow-lg: rgba(15, 23, 42, 0.14);
+}
+
+/* ==========================================================================
+   BALL RUN THEME — Light Environment (independent of NOVA dark)
+   60% dominant: Very light mint/neutral background
+   30% secondary: Soft teal surfaces (track tray, panels)
+   10% accent: Deep teal (#0f766e) for the ball, gaps and CTAs
+   ========================================================================== */
+
+:root {
+  /* --- 60% Dominant: Light mint/neutral backgrounds --- */
+  --ball-bg-primary: #eef4f3;
+  --ball-bg-secondary: #e0eae8;
+  --ball-bg-surface: #f7faf9;
+  --ball-surface: #ffffff;
+
+  /* --- 30% Secondary: Soft teal surfaces --- */
+  --ball-accent-secondary: #d3e5e2;
+  --ball-panel: #d3e5e2;
+  --ball-panel-border: #64748b;
+  --ball-track: #ffffff;
+  --ball-lane-line: #c3d3d0;
+
+  /* --- 10% Accent: Deep teal --- */
+  --ball-accent: #0f766e;
+  --ball-accent-light: #14b8a6;
+  --ball-on-accent: #ffffff;
+
+  /* --- Track elements --- */
+  --ball-wall: #0f766e;
+  --ball-ball: #0f766e;
+  --ball-ball-inner: #14b8a6;
+
+  /* --- Text --- */
+  --ball-text-primary: #14201f;
+  --ball-text-secondary: #44544f;
+  --ball-text-muted: #5b6a66;
+
+  /* --- Borders (>=3:1 on light surfaces) --- */
+  --ball-border: #5c6b82;
+  --ball-border-subtle: #8b97ab;
+  --ball-border-focus: #0f766e;
+
+  /* --- Status --- */
+  --ball-success: #047857;
+  --ball-warning: #b45309;
+  --ball-error: #dc2626;
+  --ball-success-bg: #ecfdf5;
+  --ball-success-border: #059669;
+
+  /* --- Shadows --- */
+  --ball-shadow-sm: rgba(15, 23, 42, 0.06);
+  --ball-shadow-md: rgba(15, 23, 42, 0.1);
+  --ball-shadow-lg: rgba(15, 23, 42, 0.14);
+}
+
+/* ==========================================================================
+   WATER SORT THEME — Light Environment (independent of NOVA dark)
+   60% dominant: Very light neutral background
+   30% secondary: Soft blue-gray surfaces (tube tray, panels)
+   10% accent: Indigo (#4f46e5) for selection, base stands and CTAs
+   ========================================================================== */
+
+:root {
+  /* --- 60% Dominant: Light neutral backgrounds --- */
+  --water-bg-primary: #f1f3f9;
+  --water-bg-secondary: #e4e8f2;
+  --water-bg-surface: #f8fafc;
+  --water-surface: #ffffff;
+
+  /* --- 30% Secondary: Soft blue-gray surfaces --- */
+  --water-accent-secondary: #dfe4f3;
+  --water-panel: #e4e8f2;
+  --water-panel-border: #64748b;
+
+  /* --- 10% Accent: Indigo --- */
+  --water-accent: #4f46e5;
+  --water-accent-light: #6366f1;
+  --water-on-accent: #ffffff;
+
+  /* --- Text --- */
+  --water-text-primary: #17202e;
+  --water-text-secondary: #455063;
+  --water-text-muted: #5b6475;
+
+  /* --- Borders (>=3:1 on light surfaces) --- */
+  --water-border: #5c6b82;
+  --water-border-subtle: #8b97ab;
+  --water-border-focus: #4f46e5;
+  --water-tube: #ffffff;
+
+  /* --- Status --- */
+  --water-success: #047857;
+  --water-warning: #b45309;
+  --water-error: #dc2626;
+  --water-success-bg: #ecfdf5;
+  --water-success-border: #059669;
+
+  /* --- Shadows --- */
+  --water-shadow-sm: rgba(15, 23, 42, 0.06);
+  --water-shadow-md: rgba(15, 23, 42, 0.1);
+  --water-shadow-lg: rgba(15, 23, 42, 0.14);
+}
